@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "q3rcon-cli"
 dynamic = ["version"]
-description = ''
+description = 'An async CLI for Q3 compatible RCON servers built with aio-q3-rcon and clypi.'
 readme = "README.md"
 requires-python = ">=3.10"
 license = "MIT"
