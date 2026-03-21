@@ -1,0 +1,102 @@
+import clypi
+from aioq3rcon import Client
+from clypi import Command, arg
+from typing_extensions import override
+
+from .commands import (
+    Fastrestart,
+    Gametype,
+    Hostname,
+    Map,
+    Mapname,
+    Maprotate,
+    Plugins,
+    Status,
+)
+from .console import Console
+
+Subcommands = (
+    Status | Mapname | Maprotate | Fastrestart | Gametype | Hostname | Map | Plugins
+)
+
+
+class Q3rconCli(Command):
+    subcommand: Subcommands | None = None
+    host: str = arg(
+        'localhost',
+        short='h',
+        help='The host to connect to',
+        env='Q3RCON_CLI_HOST',
+        group='Connection',
+    )
+    port: int = arg(
+        27960,
+        short='p',
+        help='The port to connect to',
+        env='Q3RCON_CLI_PORT',
+        group='Connection',
+    )
+    password: str = arg(
+        '',
+        short='P',
+        help='The password for authentication',
+        env='Q3RCON_CLI_PASSWORD',
+        group='Connection',
+    )
+    interactive: bool = arg(
+        False,
+        short='i',
+        help='Whether to start in interactive mode (defaults to false)',
+    )
+
+    @override
+    async def run(self):
+        if self.interactive:
+            await self.run_interactive()
+        else:
+            await Status.run(self)
+
+    async def run_interactive(self):
+        print(
+            clypi.style('Entering interactive mode. Type', fg='blue'),
+            clypi.style("'Q'", fg='red'),
+            clypi.style('to quit.', fg='blue'),
+        )
+
+        DEFAULT_FRAGMENT_READ_TIMEOUT = 0.25
+        while command := input(clypi.style('cmd: ', fg='green')):
+            if command.lower() == 'q':
+                break
+
+            fragment_read_timeout = None
+            if command in (
+                'status',
+                'fast_restart',
+                'map_restart',
+                'map',
+                'map_rotate',
+            ):
+                fragment_read_timeout = 1
+
+            async with Client(
+                self.host,
+                self.port,
+                self.password,
+                fragment_read_timeout=fragment_read_timeout
+                or DEFAULT_FRAGMENT_READ_TIMEOUT,
+            ) as client:
+                try:
+                    if response := await client.send_command(command):
+                        Console.print_response(response)
+                except TimeoutError:
+                    print(
+                        clypi.style(
+                            'Timeout waiting for response for command:', fg='red'
+                        ),
+                        clypi.style(command, fg='yellow'),
+                    )
+
+
+def main():
+    cli = Q3rconCli().parse()
+    cli.start()
