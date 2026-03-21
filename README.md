@@ -54,6 +54,33 @@ export Q3RCON_CLI_PORT="28960"
 export Q3RCON_CLI_PASSWORD="<rcon password>"
 ```
 
+## Use
+
+```console
+Usage: q3rcon-cli [OPTIONS] COMMAND
+
+┏━ Subcommands ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ status       Prints the status of the server                                         ┃
+┃ mapname      Prints the current map name of the server                               ┃
+┃ maprotate    Rotates the map to the next one in the map rotation list                ┃
+┃ fastrestart  Executes a fast restart of the server                                   ┃
+┃ gametype     Get or set the current gametype of the server                           ┃
+┃ hostname     Get or set the current hostname of the server                           ┃
+┃ map          Get the current map or change to a new one                              ┃
+┃ plugins      Prints the currently loaded plugins of the server                       ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+┏━ Options ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ -i, --interactive   Whether to start in interactive mode (defaults to false)         ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+┏━ Connection options ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ -h, --host <HOST>          The host to connect to                                    ┃
+┃ -p, --port <PORT>          The port to connect to                                    ┃
+┃ -P, --password <PASSWORD>  The password for authentication                           ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+```
+
 ## Special Thanks
 
 - [lapetus-11](https://github.com/Iapetus-11) for writing the [aio-q3-rcon](https://github.com/Iapetus-11/aio-q3-rcon) package.
