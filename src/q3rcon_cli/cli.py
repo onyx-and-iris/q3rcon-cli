@@ -30,7 +30,7 @@ class Q3rconCli(Command):
         group='Connection',
     )
     port: int = arg(
-        27960,
+        28960,
         short='p',
         help='The port to connect to',
         env='Q3RCON_CLI_PORT',
