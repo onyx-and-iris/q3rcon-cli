@@ -2,8 +2,8 @@
 
 [![Hatch project](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/pypa/hatch/master/docs/assets/badge/v0.json)](https://github.com/pypa/hatch)
 [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
-[![PyPI - Version](https://img.shields.io/pypi/v/q3rcon-tui.svg)](https://pypi.org/project/q3rcon-tui)
-[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/q3rcon-tui.svg)](https://pypi.org/project/q3rcon-tui)
+[![PyPI - Version](https://img.shields.io/pypi/v/q3rcon-cli.svg)](https://pypi.org/project/q3rcon-cli)
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/q3rcon-cli.svg)](https://pypi.org/project/q3rcon-cli)
 
 -----
 
