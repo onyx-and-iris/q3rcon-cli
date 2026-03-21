@@ -9,6 +9,7 @@ from .commands import (
     Hostname,
     Map,
     Mapname,
+    Maprestart,
     Maprotate,
     Plugins,
     Status,
@@ -16,7 +17,15 @@ from .commands import (
 from .console import Console
 
 Subcommands = (
-    Status | Mapname | Maprotate | Fastrestart | Gametype | Hostname | Map | Plugins
+    Fastrestart
+    | Gametype
+    | Hostname
+    | Map
+    | Mapname
+    | Maprestart
+    | Maprotate
+    | Plugins
+    | Status
 )
 
 
@@ -54,7 +63,7 @@ class Q3rconCli(Command):
         if self.interactive:
             await self.run_interactive()
         else:
-            await Status.run(self)
+            await Status(self.host, self.port, self.password).run()
 
     async def run_interactive(self):
         print(
