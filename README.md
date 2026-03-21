@@ -49,8 +49,8 @@ example .envrc:
 ```env
 #!/usr/bin/env bash
 
-export Q3RCON_CLI_HOST="localhost"
-export Q3RCON_CLI_PORT="28960"
+export Q3RCON_CLI_HOST=localhost
+export Q3RCON_CLI_PORT=28960
 export Q3RCON_CLI_PASSWORD="<rcon password>"
 ```
 
