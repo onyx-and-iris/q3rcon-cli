@@ -74,12 +74,12 @@ class OutConsole(Console):
             cprint('\nNo players connected.\n', fg=self.style)
             return
 
-        slots = clypi.boxed(_slots, title='Slot', width=15)
-        scores = clypi.boxed(_scores, title='Score', width=15)
-        pings = clypi.boxed(_pings, title='Ping', width=15)
-        guids = clypi.boxed(_guids, title='GUID', width=40)
-        names = clypi.boxed(_names, title='Name', width=30)
-        ips = clypi.boxed(_ips, title='IP', width=30)
+        slots = clypi.boxed(_slots, title='Slot', width=10, align='center')
+        scores = clypi.boxed(_scores, title='Score', width=10, align='center')
+        pings = clypi.boxed(_pings, title='Ping', width=10, align='center')
+        guids = clypi.boxed(_guids, title='GUID', width=len(max(_guids, key=len)) + 4)
+        names = clypi.boxed(_names, title='Name', width=len(max(_names, key=len)) + 4)
+        ips = clypi.boxed(_ips, title='IP', width=len(max(_ips, key=len)) + 4)
         print(f'\n{clypi.stack(slots, scores, pings, guids, names, ips, padding=0)}')
 
     def print_cvar(self, response: str):
@@ -87,20 +87,20 @@ class OutConsole(Console):
 
         if m := self.CVAR_REGEX.match(response):
             name = clypi.boxed(
-                [m.group('name')], title='Name', width=max(len(m.group('name')) + 4, 30)
+                [m.group('name')], title='Name', width=max(len(m.group('name')) + 4, 15)
             )
             value = clypi.boxed(
                 [m.group('value')],
                 title='Value',
-                width=max(len(m.group('value')) + 4, 30),
+                width=max(len(m.group('value')) + 4, 15),
             )
             default = clypi.boxed(
                 [m.group('default')],
                 title='Default',
-                width=max(len(m.group('default')) + 4, 30),
+                width=max(len(m.group('default')) + 4, 15),
             )
             info = clypi.boxed(
-                [m.group('info')], title='Info', width=max(len(m.group('info')) + 4, 30)
+                [m.group('info')], title='Info', width=max(len(m.group('info')) + 4, 15)
             )
             print(f'\n{clypi.stack(name, value, default, info, padding=0)}')
 
