@@ -33,6 +33,9 @@ Source = "https://github.com/onyx-and-iris/q3rcon-cli"
 [tool.hatch.version]
 path = "src/q3rcon_cli/__about__.py"
 
+[tool.hatch.envs.default]
+dependencies = ["aio-q3-rcon @ {root:parent:uri}/aio-q3-rcon"]
+
 [tool.hatch.envs.types]
 extra-dependencies = ["mypy>=1.0.0"]
 [tool.hatch.envs.types.scripts]
