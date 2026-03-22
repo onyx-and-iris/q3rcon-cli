@@ -2,7 +2,7 @@ from aioq3rcon import Client
 from clypi import Command, Positional, Spinner, arg
 from typing_extensions import override
 
-from q3rcon_cli.console import Console
+from q3rcon_cli import console
 
 
 class Gametype(Command):
@@ -26,7 +26,7 @@ class Gametype(Command):
         if not Gametype.new_gametype:
             async with Client(self.host, self.port, self.password) as client:
                 if response := await client.send_command('g_gametype'):
-                    Console.print_cvar(response)
+                    console.out.print_cvar(response)
             return
 
         async with Client(self.host, self.port, self.password) as client:
@@ -40,4 +40,4 @@ class Gametype(Command):
 
                 client.fragment_read_timeout = DEFAULT_FRAGMENT_READ_TIMEOUT
                 if response := await client.send_command('g_gametype'):
-                    Console.print_cvar(response)
+                    console.out.print_cvar(response)

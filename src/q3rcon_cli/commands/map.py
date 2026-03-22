@@ -2,7 +2,7 @@ from aioq3rcon import Client
 from clypi import Command, Positional, Spinner, arg
 from typing_extensions import override
 
-from q3rcon_cli.console import Console
+from q3rcon_cli import console
 
 
 class Map(Command):
@@ -21,7 +21,7 @@ class Map(Command):
         if not self.new_map:
             async with Client(self.host, self.port, self.password) as client:
                 if response := await client.send_command('mapname'):
-                    Console.print_cvar(response)
+                    console.out.print_cvar(response)
             return
 
         async with Spinner('Changing map...'):
@@ -30,4 +30,4 @@ class Map(Command):
             ) as client:
                 await client.send_command(f'map mp_{self.new_map.removeprefix("mp_")}')
                 if response := await client.send_command('mapname'):
-                    Console.print_cvar(response)
+                    console.out.print_cvar(response)

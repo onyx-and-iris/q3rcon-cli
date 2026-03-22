@@ -2,7 +2,7 @@ from aioq3rcon import Client
 from clypi import Command, Spinner, arg
 from typing_extensions import override
 
-from q3rcon_cli.console import Console
+from q3rcon_cli import console
 
 
 class Status(Command):
@@ -19,4 +19,4 @@ class Status(Command):
                 self.host, self.port, self.password, fragment_read_timeout=0.5
             ) as client:
                 if response := await client.send_command('status'):
-                    Console.print_status(response)
+                    console.out.print_status(response)

@@ -2,7 +2,7 @@ from aioq3rcon import Client
 from clypi import Command, Spinner, arg
 from typing_extensions import override
 
-from q3rcon_cli.console import Console
+from q3rcon_cli import console
 
 
 class Maprestart(Command):
@@ -19,4 +19,4 @@ class Maprestart(Command):
                 self.host, self.port, self.password, fragment_read_timeout=1
             ) as client:
                 if response := await client.send_command('map_restart'):
-                    Console.print_response(response)
+                    console.out.print_response(response)

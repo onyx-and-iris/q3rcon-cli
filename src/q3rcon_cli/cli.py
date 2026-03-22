@@ -1,8 +1,9 @@
 import clypi
-from aioq3rcon import Client
+from aioq3rcon import Client, IncorrectPasswordError
 from clypi import Command, arg
 from typing_extensions import override
 
+from . import console
 from .commands import (
     Fastrestart,
     Gametype,
@@ -14,7 +15,6 @@ from .commands import (
     Plugins,
     Status,
 )
-from .console import Console
 
 Subcommands = (
     Fastrestart
@@ -96,16 +96,20 @@ class Q3rconCli(Command):
             ) as client:
                 try:
                     if response := await client.send_command(command):
-                        Console.print_response(response)
+                        console.out.print_response(response)
                 except TimeoutError:
-                    print(
-                        clypi.style(
-                            'Timeout waiting for response for command:', fg='red'
-                        ),
-                        clypi.style(command, fg='yellow'),
+                    console.err.print(
+                        f"Timeout waiting for response for command: '{command}'"
                     )
 
 
 def main():
-    cli = Q3rconCli().parse()
-    cli.start()
+    try:
+        cli = Q3rconCli().parse()
+        cli.start()
+    except IncorrectPasswordError:
+        console.err.print('Incorrect password provided.')
+    except TimeoutError:
+        console.err.print(
+            f"Timeout waiting for response for command: '{type(cli.subcommand).__name__.lower()}'"
+        )

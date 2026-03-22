@@ -5,6 +5,19 @@ from clypi import cprint
 
 
 class Console:
+    def __init__(self, style: str = 'yellow'):
+        self.style = style
+
+    def print(self, message: str, style: str | None = None):
+        cprint(message, fg=style or self.style)
+
+
+class ErrorConsole(Console):
+    def __init__(self):
+        super().__init__(style='red')
+
+
+class OutConsole(Console):
     COLOUR_CODE_REGEX = re.compile(r'\^[0-9]')
     STATUS_PLAYER_REGEX = re.compile(
         r'^\s*(?P<slot>[0-9]+)\s+'
@@ -30,18 +43,16 @@ class Console:
     )
 
     @staticmethod
-    def remove_colour_codes(s: str) -> str:
+    def _remove_colour_codes(s: str) -> str:
         """Remove Quake 3 colour codes from a string."""
-        return Console.COLOUR_CODE_REGEX.sub('', s)
+        return OutConsole.COLOUR_CODE_REGEX.sub('', s)
 
-    @staticmethod
-    def print_response(response: str):
-        response = Console.remove_colour_codes(response).removeprefix('print\n')
+    def print_response(self, response: str):
+        response = self._remove_colour_codes(response).removeprefix('print\n')
 
-        cprint(f'\n{response}\n', fg='yellow')
+        cprint(f'\n{response}\n', fg=self.style)
 
-    @staticmethod
-    def print_status(response: str):
+    def print_status(self, response: str):
         _slots = []
         _scores = []
         _pings = []
@@ -51,16 +62,16 @@ class Console:
 
         lines = response.splitlines()
         for line in lines:
-            if m := Console.STATUS_PLAYER_REGEX.match(line):
+            if m := OutConsole.STATUS_PLAYER_REGEX.match(line):
                 _slots.append(m.group('slot'))
                 _scores.append(m.group('score'))
                 _pings.append(m.group('ping'))
                 _guids.append(m.group('guid'))
-                _names.append(m.group('name'))
+                _names.append(self._remove_colour_codes(m.group('name')))
                 _ips.append(m.group('ip'))
 
         if not _slots:
-            cprint('\nNo players connected.\n', fg='yellow')
+            cprint('\nNo players connected.\n', fg=self.style)
             return
 
         slots = clypi.boxed(_slots, title='Slot', width=15)
@@ -71,11 +82,10 @@ class Console:
         ips = clypi.boxed(_ips, title='IP', width=30)
         print(f'\n{clypi.stack(slots, scores, pings, guids, names, ips, padding=0)}')
 
-    @staticmethod
-    def print_cvar(response: str):
-        response = Console.remove_colour_codes(response).removeprefix('print\n')
+    def print_cvar(self, response: str):
+        response = self._remove_colour_codes(response).removeprefix('print\n')
 
-        if m := Console.CVAR_REGEX.match(response):
+        if m := self.CVAR_REGEX.match(response):
             name = clypi.boxed(
                 [m.group('name')], title='Name', width=max(len(m.group('name')) + 4, 30)
             )
@@ -93,3 +103,7 @@ class Console:
                 [m.group('info')], title='Info', width=max(len(m.group('info')) + 4, 30)
             )
             print(f'\n{clypi.stack(name, value, default, info, padding=0)}')
+
+
+out = OutConsole()
+err = ErrorConsole()
