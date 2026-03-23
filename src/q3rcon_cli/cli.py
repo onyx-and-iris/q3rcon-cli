@@ -78,14 +78,14 @@ class Q3rconCli(Command):
             if command.lower() == 'q':
                 break
 
-            TIMEOUTS = {
+            CMD_CONFIG = {
                 'status': (2, 1, False),
                 'fast_restart': (3, 1, True),
                 'map_restart': (3, 1, True),
                 'map': (3, 1, True),
                 'map_rotate': (3, 1, True),
             }
-            timeout, fragment_read_timeout, interpret = TIMEOUTS.get(
+            timeout, fragment_read_timeout, interpret = CMD_CONFIG.get(
                 command.split()[0].lower(),
                 (DEFAULT_TIMEOUT, DEFAULT_FRAGMENT_READ_TIMEOUT, False),
             )
