@@ -1,5 +1,5 @@
 from aioq3rcon import Client
-from clypi import Command, Positional, arg, cprint
+from clypi import Command, Positional, Spinner, arg
 from typing_extensions import override
 
 from q3rcon_cli import console
@@ -19,12 +19,14 @@ class Hostname(Command):
     @override
     async def run(self):
         if not self.new_hostname:
-            async with Client(self.host, self.port, self.password) as client:
-                if response := await client.send_command('sv_hostname'):
-                    console.out.print_cvar(response)
+            async with Spinner('Fetching current hostname', suffix='...'):
+                async with Client(self.host, self.port, self.password) as client:
+                    response = await client.send_command('sv_hostname')
+            console.out.print_cvar(response)
             return
 
-        async with Client(self.host, self.port, self.password) as client:
-            await client.send_command(f'sv_hostname {self.new_hostname}')
+        async with Spinner(f'Changing hostname to {self.new_hostname}', suffix='...'):
+            async with Client(self.host, self.port, self.password) as client:
+                await client.send_command(f'sv_hostname {self.new_hostname}')
 
-        cprint(f'Hostname changed to: {self.new_hostname}', fg='green')
+        console.out.print(f'Hostname changed to: {self.new_hostname}', style='green')

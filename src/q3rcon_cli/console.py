@@ -72,7 +72,7 @@ class OutConsole(Console):
                 _names.append(self._remove_colour_codes(m.group('name')))
                 _ips.append(m.group('ip'))
             elif m := OutConsole.STATUS_MAP_REGEX.match(line):
-                cprint(f'\nCurrent map: {m.group("mapname")}', fg=self.style)
+                cprint(f'Current map: {m.group("mapname")}', fg=self.style)
 
         if not _slots:
             cprint('No players connected.', fg='red')

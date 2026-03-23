@@ -1,6 +1,6 @@
 import clypi
 from aioq3rcon import Client, IncorrectPasswordError
-from clypi import Command, arg
+from clypi import Command, Spinner, arg
 from typing_extensions import override
 
 from . import console
@@ -72,35 +72,42 @@ class Q3rconCli(Command):
             clypi.style('to quit.', fg='blue'),
         )
 
+        DEFAULT_TIMEOUT = 2
         DEFAULT_FRAGMENT_READ_TIMEOUT = 0.25
         while command := input(clypi.style('cmd: ', fg='green')):
             if command.lower() == 'q':
                 break
 
-            fragment_read_timeout = None
-            if command in (
-                'status',
-                'fast_restart',
-                'map_restart',
-                'map',
-                'map_rotate',
-            ):
-                fragment_read_timeout = 1
+            TIMEOUTS = {
+                'status': (2, 1, False),
+                'fast_restart': (3, 1, True),
+                'map_restart': (3, 1, True),
+                'map': (3, 1, True),
+                'map_rotate': (3, 1, True),
+            }
+            timeout, fragment_read_timeout, interpret = TIMEOUTS.get(
+                command.split()[0].lower(),
+                (DEFAULT_TIMEOUT, DEFAULT_FRAGMENT_READ_TIMEOUT, False),
+            )
 
-            async with Client(
-                self.host,
-                self.port,
-                self.password,
-                fragment_read_timeout=fragment_read_timeout
-                or DEFAULT_FRAGMENT_READ_TIMEOUT,
-            ) as client:
-                try:
-                    if response := await client.send_command(command):
-                        console.out.print_response(response)
-                except TimeoutError:
-                    console.err.print(
-                        f"Timeout waiting for response for command: '{command}'"
-                    )
+            async with Spinner(f"Sending command: '{command}'", suffix='...'):
+                async with Client(
+                    self.host,
+                    self.port,
+                    self.password,
+                    timeout=timeout or DEFAULT_TIMEOUT,
+                    fragment_read_timeout=fragment_read_timeout
+                    or DEFAULT_FRAGMENT_READ_TIMEOUT,
+                ) as client:
+                    try:
+                        if response := await client.send_command(
+                            command, interpret=interpret
+                        ):
+                            console.out.print_response(response)
+                    except TimeoutError:
+                        console.err.print(
+                            f"Timeout waiting for response for command: '{command}'"
+                        )
 
 
 def main():

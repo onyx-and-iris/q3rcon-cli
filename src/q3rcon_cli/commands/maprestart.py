@@ -16,7 +16,8 @@ class Maprestart(Command):
     async def run(self):
         async with Spinner('Restarting map', suffix='...'):
             async with Client(
-                self.host, self.port, self.password, fragment_read_timeout=1
+                self.host, self.port, self.password, timeout=3, fragment_read_timeout=1
             ) as client:
-                if response := await client.send_command('map_restart'):
-                    console.out.print_response(response)
+                response = await client.send_command('map_restart', interpret=True)
+
+        console.out.print_response(response)

@@ -1,5 +1,5 @@
 from aioq3rcon import Client
-from clypi import Command, arg
+from clypi import Command, Spinner, arg
 from typing_extensions import override
 
 from q3rcon_cli import console
@@ -14,6 +14,8 @@ class Fastrestart(Command):
 
     @override
     async def run(self):
-        async with Client(self.host, self.port, self.password) as client:
-            if response := await client.send_command('fast_restart'):
-                console.out.print_response(response)
+        async with Spinner('Executing fast restart', suffix='...'):
+            async with Client(self.host, self.port, self.password) as client:
+                response = await client.send_command('fast_restart', interpret=True)
+
+        console.out.print_response(response)

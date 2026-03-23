@@ -16,7 +16,12 @@ class Maprotate(Command):
     async def run(self):
         async with Spinner('Rotating map', suffix='...'):
             async with Client(
-                self.host, self.port, self.password, fragment_read_timeout=1
+                self.host,
+                self.port,
+                self.password,
+                timeout=3,
+                fragment_read_timeout=1,
             ) as client:
-                if response := await client.send_command('map_rotate'):
-                    console.out.print_response(response)
+                response = await client.send_command('map_rotate', interpret=True)
+
+        console.out.print_response(response)
