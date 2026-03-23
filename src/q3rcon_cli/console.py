@@ -50,9 +50,8 @@ class OutConsole(Console):
         return OutConsole.COLOUR_CODE_REGEX.sub('', s)
 
     def print_response(self, response: str):
-        response = self._remove_colour_codes(response).removeprefix('print\n')
-
-        cprint(response, fg=self.style)
+        if response := self._remove_colour_codes(response).removeprefix('print\n'):
+            cprint(response, fg=self.style)
 
     def print_status(self, response: str):
         _slots = []

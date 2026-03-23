@@ -117,8 +117,7 @@ class Q3rconCli(Command):
                             f"Timeout waiting for response for command: '{command}'"
                         )
 
-            if response:
-                console.out.print_response(response)
+            console.out.print_response(response)
 
 
 def main():
