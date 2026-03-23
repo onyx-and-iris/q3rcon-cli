@@ -10,6 +10,9 @@
 ## Table of Contents
 
 - [Installation](#installation)
+- [Configuration](#configuration)
+- [Use](#use)
+- [Shell Completion](#shell-completion)
 - [License](#license)
 
 ## Installation
@@ -81,6 +84,14 @@ Usage: q3rcon-cli [OPTIONS] COMMAND
 ┃ -p, --port <PORT>          The port to connect to                                                ┃
 ┃ -P, --password <PASSWORD>  The password for authentication                                       ┃
 ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+```
+
+## Shell Completion
+
+Shell completion scripts are available for *bash*, *zsh*, and *fish*.
+
+```console
+q3rcon-cli --install-autocomplete
 ```
 
 ## Special Thanks

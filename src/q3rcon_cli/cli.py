@@ -1,6 +1,7 @@
 import clypi
 from aioq3rcon import Client, IncorrectPasswordError
 from clypi import Command, Spinner, arg
+from clypi import parsers as cp
 from typing_extensions import override
 
 from . import console
@@ -38,6 +39,7 @@ class Q3rconCli(Command):
         help='The host to connect to',
         env='Q3RCON_CLI_HOST',
         group='Connection',
+        parser=cp.Str(min=1),
     )
     port: int = arg(
         28960,
@@ -45,6 +47,7 @@ class Q3rconCli(Command):
         help='The port to connect to',
         env='Q3RCON_CLI_PORT',
         group='Connection',
+        parser=cp.Int(min=1, max=65535),
     )
     password: str = arg(
         '',
@@ -52,6 +55,7 @@ class Q3rconCli(Command):
         help='The password for authentication',
         env='Q3RCON_CLI_PASSWORD',
         group='Connection',
+        parser=cp.Str(min=8),
     )
     interactive: bool = arg(
         False,
