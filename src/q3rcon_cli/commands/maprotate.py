@@ -14,7 +14,7 @@ class Maprotate(Command):
 
     @override
     async def run(self):
-        async with Spinner('Rotating map...'):
+        async with Spinner('Rotating map', suffix='...'):
             async with Client(
                 self.host, self.port, self.password, fragment_read_timeout=1
             ) as client:

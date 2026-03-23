@@ -24,7 +24,7 @@ class Map(Command):
                     console.out.print_cvar(response)
             return
 
-        async with Spinner('Changing map...'):
+        async with Spinner('Changing map', suffix='...'):
             async with Client(
                 self.host, self.port, self.password, fragment_read_timeout=1
             ) as client:

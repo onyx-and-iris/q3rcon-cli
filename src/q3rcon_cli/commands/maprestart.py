@@ -14,7 +14,7 @@ class Maprestart(Command):
 
     @override
     async def run(self):
-        async with Spinner('Restarting map...'):
+        async with Spinner('Restarting map', suffix='...'):
             async with Client(
                 self.host, self.port, self.password, fragment_read_timeout=1
             ) as client:

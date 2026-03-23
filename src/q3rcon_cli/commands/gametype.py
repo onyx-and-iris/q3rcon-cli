@@ -34,7 +34,7 @@ class Gametype(Command):
 
             await client.send_command(f'g_gametype {self.new_gametype}')
             if self.force:
-                async with Spinner('Forcing gametype change...'):
+                async with Spinner('Forcing gametype change', suffix='...'):
                     client.fragment_read_timeout = 1
                     await client.send_command('map_restart')
 
