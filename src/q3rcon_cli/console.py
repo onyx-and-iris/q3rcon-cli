@@ -1,7 +1,7 @@
 import re
 
 import clypi
-from clypi import cprint
+from clypi import Boxes, cprint
 
 
 class Console:
@@ -33,6 +33,8 @@ class OutConsole(Console):
         r'(?P<rate>[0-9]+)$',
         re.IGNORECASE | re.VERBOSE,
     )
+    STATUS_MAP_REGEX = re.compile(r'^map: (?P<mapname>mp_[a-z_]+)$')
+
     CVAR_REGEX = re.compile(
         r'^["](?P<name>[a-z_]+)["]\sis[:]\s'
         r'["](?P<value>.*?)["]\s'
@@ -69,40 +71,68 @@ class OutConsole(Console):
                 _guids.append(m.group('guid'))
                 _names.append(self._remove_colour_codes(m.group('name')))
                 _ips.append(m.group('ip'))
+            elif m := OutConsole.STATUS_MAP_REGEX.match(line):
+                cprint(f'\nCurrent map: {m.group("mapname")}', fg=self.style)
 
         if not _slots:
-            cprint('\nNo players connected.\n', fg=self.style)
+            cprint('No players connected.', fg='red')
             return
 
-        slots = clypi.boxed(_slots, title='Slot', width=10, align='center')
-        scores = clypi.boxed(_scores, title='Score', width=10, align='center')
-        pings = clypi.boxed(_pings, title='Ping', width=10, align='center')
-        guids = clypi.boxed(_guids, title='GUID', width=len(max(_guids, key=len)) + 4)
-        names = clypi.boxed(_names, title='Name', width=len(max(_names, key=len)) + 4)
-        ips = clypi.boxed(_ips, title='IP', width=len(max(_ips, key=len)) + 4)
-        print(f'\n{clypi.stack(slots, scores, pings, guids, names, ips, padding=0)}')
+        slots = clypi.boxed(
+            _slots, title='Slot', width=10, align='center', style=Boxes.ROUNDED
+        )
+        scores = clypi.boxed(
+            _scores, title='Score', width=10, align='center', style=Boxes.ROUNDED
+        )
+        pings = clypi.boxed(
+            _pings, title='Ping', width=10, align='center', style=Boxes.ROUNDED
+        )
+        guids = clypi.boxed(
+            _guids,
+            title='GUID',
+            width=len(max(_guids, key=len)) + 4,
+            style=Boxes.ROUNDED,
+        )
+        names = clypi.boxed(
+            _names,
+            title='Name',
+            width=len(max(_names, key=len)) + 4,
+            style=Boxes.ROUNDED,
+        )
+        ips = clypi.boxed(
+            _ips, title='IP', width=len(max(_ips, key=len)) + 4, style=Boxes.ROUNDED
+        )
+        print(f'{clypi.stack(slots, scores, pings, guids, names, ips, padding=0)}')
 
     def print_cvar(self, response: str):
         response = self._remove_colour_codes(response).removeprefix('print\n')
 
         if m := self.CVAR_REGEX.match(response):
             name = clypi.boxed(
-                [m.group('name')], title='Name', width=max(len(m.group('name')) + 4, 15)
+                [m.group('name')],
+                title='Name',
+                width=max(len(m.group('name')) + 4, 15),
+                style=Boxes.ROUNDED,
             )
             value = clypi.boxed(
                 [m.group('value')],
                 title='Value',
                 width=max(len(m.group('value')) + 4, 15),
+                style=Boxes.ROUNDED,
             )
             default = clypi.boxed(
                 [m.group('default')],
                 title='Default',
                 width=max(len(m.group('default')) + 4, 15),
+                style=Boxes.ROUNDED,
             )
             info = clypi.boxed(
-                [m.group('info')], title='Info', width=max(len(m.group('info')) + 4, 15)
+                [m.group('info')],
+                title='Info',
+                width=max(len(m.group('info')) + 4, 15),
+                style=Boxes.ROUNDED,
             )
-            print(f'\n{clypi.stack(name, value, default, info, padding=0)}')
+            print(f'{clypi.stack(name, value, default, info, padding=0)}')
 
 
 out = OutConsole()
