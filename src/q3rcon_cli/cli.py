@@ -95,9 +95,8 @@ class Q3rconCli(Command):
                     self.host,
                     self.port,
                     self.password,
-                    timeout=timeout or DEFAULT_TIMEOUT,
-                    fragment_read_timeout=fragment_read_timeout
-                    or DEFAULT_FRAGMENT_READ_TIMEOUT,
+                    timeout=timeout,
+                    fragment_read_timeout=fragment_read_timeout,
                 ) as client:
                     try:
                         if response := await client.send_command(
