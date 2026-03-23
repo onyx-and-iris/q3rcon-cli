@@ -20,7 +20,7 @@ classifiers = [
   "Programming Language :: Python :: Implementation :: CPython",
   "Programming Language :: Python :: Implementation :: PyPy",
 ]
-dependencies = ["aio-q3-rcon>=1.0.0", "clypi>=1.8.2"]
+dependencies = ["aio-q3-rcon>=1.0.1", "clypi>=1.8.2"]
 
 [project.scripts]
 q3rcon-cli = "q3rcon_cli.cli:main"
