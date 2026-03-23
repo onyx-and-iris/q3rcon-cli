@@ -52,7 +52,7 @@ class OutConsole(Console):
     def print_response(self, response: str):
         response = self._remove_colour_codes(response).removeprefix('print\n')
 
-        cprint(f'\n{response}\n', fg=self.style)
+        cprint(response, fg=self.style)
 
     def print_status(self, response: str):
         _slots = []

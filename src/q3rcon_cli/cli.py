@@ -4,6 +4,7 @@ from clypi import Command, Spinner, arg
 from typing_extensions import override
 
 from . import console
+from .__about__ import __version__
 from .commands import (
     Fastrestart,
     Gametype,
@@ -57,9 +58,18 @@ class Q3rconCli(Command):
         short='i',
         help='Whether to start in interactive mode (defaults to false)',
     )
+    version: bool = arg(
+        False,
+        short='v',
+        help='Show the version and exit',
+    )
 
     @override
     async def run(self):
+        if self.version:
+            print(f'q3rcon-cli version: {clypi.style(__version__, fg="green")}')
+            return
+
         if self.interactive:
             await self.run_interactive()
         else:
@@ -68,7 +78,7 @@ class Q3rconCli(Command):
     async def run_interactive(self):
         print(
             clypi.style('Entering interactive mode. Type', fg='blue'),
-            clypi.style("'Q'", fg='red'),
+            clypi.style("'Q'", fg='yellow'),
             clypi.style('to quit.', fg='blue'),
         )
 
@@ -99,14 +109,14 @@ class Q3rconCli(Command):
                     fragment_read_timeout=fragment_read_timeout,
                 ) as client:
                     try:
-                        if response := await client.send_command(
+                        response = await client.send_command(
                             command, interpret=interpret
-                        ):
-                            console.out.print_response(response)
+                        )
                     except TimeoutError:
                         console.err.print(
                             f"Timeout waiting for response for command: '{command}'"
                         )
+            console.out.print_response(response)
 
 
 def main():
