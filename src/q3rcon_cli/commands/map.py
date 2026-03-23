@@ -1,5 +1,5 @@
 from aioq3rcon import Client
-from clypi import Command, Positional, Spinner, arg
+from clypi import Command, Positional, Spinner, arg, cprint
 from typing_extensions import override
 
 from q3rcon_cli import console
@@ -29,5 +29,5 @@ class Map(Command):
                 self.host, self.port, self.password, fragment_read_timeout=1
             ) as client:
                 await client.send_command(f'map mp_{self.new_map.removeprefix("mp_")}')
-                if response := await client.send_command('mapname'):
-                    console.out.print_cvar(response)
+
+        cprint(f'Map changed to {self.new_map.removeprefix("mp_")}', fg='green')

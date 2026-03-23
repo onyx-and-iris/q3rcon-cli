@@ -1,5 +1,5 @@
 from aioq3rcon import Client
-from clypi import Command, Positional, Spinner, arg
+from clypi import Command, Positional, Spinner, arg, cprint
 from typing_extensions import override
 
 from q3rcon_cli import console
@@ -23,21 +23,17 @@ class Gametype(Command):
 
     @override
     async def run(self):
-        if not Gametype.new_gametype:
+        if not self.new_gametype:
             async with Client(self.host, self.port, self.password) as client:
                 if response := await client.send_command('g_gametype'):
                     console.out.print_cvar(response)
             return
 
         async with Client(self.host, self.port, self.password) as client:
-            DEFAULT_FRAGMENT_READ_TIMEOUT = client.fragment_read_timeout
-
             await client.send_command(f'g_gametype {self.new_gametype}')
             if self.force:
                 async with Spinner('Forcing gametype change', suffix='...'):
                     client.fragment_read_timeout = 1
                     await client.send_command('map_restart')
 
-                client.fragment_read_timeout = DEFAULT_FRAGMENT_READ_TIMEOUT
-                if response := await client.send_command('g_gametype'):
-                    console.out.print_cvar(response)
+            cprint(f'Gametype changed successfully to {self.new_gametype}.', fg='green')
