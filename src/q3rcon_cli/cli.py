@@ -86,19 +86,19 @@ class Q3rconCli(Command):
             clypi.style('to quit.', fg='blue'),
         )
 
+        CMD_CONFIG = {
+            'status': (2, 1, False),
+            'fast_restart': (3, 1, True),
+            'map_restart': (3, 1, True),
+            'map': (3, 1, True),
+            'map_rotate': (3, 1, True),
+        }
         DEFAULT_TIMEOUT = 2
         DEFAULT_FRAGMENT_READ_TIMEOUT = 0.25
         while command := input(clypi.style('cmd: ', fg='green')):
             if command.lower() == 'q':
                 break
 
-            CMD_CONFIG = {
-                'status': (2, 1, False),
-                'fast_restart': (3, 1, True),
-                'map_restart': (3, 1, True),
-                'map': (3, 1, True),
-                'map_rotate': (3, 1, True),
-            }
             timeout, fragment_read_timeout, interpret = CMD_CONFIG.get(
                 command.split()[0].lower(),
                 (DEFAULT_TIMEOUT, DEFAULT_FRAGMENT_READ_TIMEOUT, False),
