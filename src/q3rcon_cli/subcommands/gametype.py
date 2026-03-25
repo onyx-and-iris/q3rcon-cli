@@ -37,7 +37,7 @@ class Gametype(Command):
                 await client.send_command(f'g_gametype {self.new_gametype}')
 
         if self.force:
-            await Maprestart(self.host, self.port, self.password).configure_and_run()
+            await Maprestart.with_configure(self.host, self.port, self.password).run()
 
         console.out.print(
             f'Gametype changed successfully to {self.new_gametype}.', style='green'

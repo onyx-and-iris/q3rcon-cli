@@ -6,29 +6,7 @@ from typing_extensions import override
 
 from . import config, console
 from .__about__ import __version__
-from .commands import (
-    Fastrestart,
-    Gametype,
-    Hostname,
-    Map,
-    Mapname,
-    Maprestart,
-    Maprotate,
-    Plugins,
-    Status,
-)
-
-Subcommands = (
-    Fastrestart
-    | Gametype
-    | Hostname
-    | Map
-    | Mapname
-    | Maprestart
-    | Maprotate
-    | Plugins
-    | Status
-)
+from .subcommands import Status, Subcommands
 
 
 class Q3rconCli(Command):

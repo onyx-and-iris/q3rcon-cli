@@ -12,19 +12,21 @@ class Maprestart(Command):
     port: int = arg(inherited=True)
     password: str = arg(inherited=True)
 
-    async def configure_and_run(self):
+    @classmethod
+    def with_configure(cls, host, port, password):
         """Configures the command with the appropriate configuration and runs it.
 
 
-        This method is used if we invoke the maprestart command from another command (e.g. gametype),
+        This classmethod is used if we invoke the maprestart command from another command (e.g. gametype),
         since the pre_run_hook is not called in that case.
         """
+        instance = cls(host, port, password)
         (
-            self.timeout,
-            self.fragment_read_timeout,
-            self.interpret,
-        ) = config.get(self.prog().split()[0].lower())
-        await self.run()
+            instance.timeout,
+            instance.fragment_read_timeout,
+            instance.interpret,
+        ) = config.get(instance.prog().split()[0].lower())
+        return instance
 
     @override
     async def run(self):

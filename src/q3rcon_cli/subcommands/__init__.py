@@ -8,14 +8,14 @@ from .maprotate import Maprotate
 from .plugins import Plugins
 from .status import Status
 
-__all__ = [
-    'Status',
-    'Mapname',
-    'Maprotate',
-    'Fastrestart',
-    'Gametype',
-    'Hostname',
-    'Map',
-    'Plugins',
-    'Maprestart',
-]
+Subcommands = (
+    Fastrestart
+    | Gametype
+    | Hostname
+    | Map
+    | Mapname
+    | Maprestart
+    | Maprotate
+    | Plugins
+    | Status
+)
