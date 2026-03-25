@@ -4,6 +4,8 @@ from typing_extensions import override
 
 from q3rcon_cli import console
 
+from .maprestart import Maprestart
+
 
 class Gametype(Command):
     """Get or set the current gametype of the server."""
@@ -35,11 +37,7 @@ class Gametype(Command):
                 await client.send_command(f'g_gametype {self.new_gametype}')
 
         if self.force:
-            async with Spinner('Forcing gametype change', suffix='...'):
-                async with Client(self.host, self.port, self.password) as client:
-                    client.timeout = 3
-                    client.fragment_read_timeout = 1
-                    await client.send_command('map_restart')
+            await Maprestart(self.host, self.port, self.password).configure_and_run()
 
         console.out.print(
             f'Gametype changed successfully to {self.new_gametype}.', style='green'

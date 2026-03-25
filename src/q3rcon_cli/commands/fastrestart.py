@@ -6,7 +6,7 @@ from q3rcon_cli import console
 
 
 class Fastrestart(Command):
-    """Executes a fast restart of the server."""
+    """Executes a fast restart of the map."""
 
     host: str = arg(inherited=True)
     port: int = arg(inherited=True)
@@ -15,7 +15,15 @@ class Fastrestart(Command):
     @override
     async def run(self):
         async with Spinner('Executing fast restart', suffix='...'):
-            async with Client(self.host, self.port, self.password) as client:
-                response = await client.send_command('fast_restart', interpret=True)
+            async with Client(
+                self.host,
+                self.port,
+                self.password,
+                timeout=self.timeout,
+                fragment_read_timeout=self.fragment_read_timeout,
+            ) as client:
+                response = await client.send_command(
+                    'fast_restart', interpret=self.interpret
+                )
 
         console.out.print_response(response)

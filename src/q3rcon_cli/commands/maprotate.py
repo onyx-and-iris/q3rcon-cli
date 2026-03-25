@@ -19,9 +19,11 @@ class Maprotate(Command):
                 self.host,
                 self.port,
                 self.password,
-                timeout=3,
-                fragment_read_timeout=1,
+                timeout=self.timeout,
+                fragment_read_timeout=self.fragment_read_timeout,
             ) as client:
-                response = await client.send_command('map_rotate', interpret=True)
+                response = await client.send_command(
+                    'map_rotate', interpret=self.interpret
+                )
 
         console.out.print_response(response)

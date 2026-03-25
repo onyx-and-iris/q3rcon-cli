@@ -15,9 +15,7 @@ class Status(Command):
     @override
     async def run(self):
         async with Spinner('Fetching status', suffix='...'):
-            async with Client(
-                self.host, self.port, self.password, fragment_read_timeout=1
-            ) as client:
+            async with Client(self.host, self.port, self.password) as client:
                 response = await client.send_command('status')
 
         console.out.print_status(response)

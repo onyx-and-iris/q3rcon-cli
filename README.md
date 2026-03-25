@@ -63,7 +63,7 @@ export Q3RCON_CLI_PASSWORD="<rcon password>"
 Usage: q3rcon-cli [OPTIONS] COMMAND
 
 ┏━ Subcommands ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-┃ fastrestart  Executes a fast restart of the server                                               ┃
+┃ fastrestart  Executes a fast restart of the map                                                  ┃
 ┃ gametype     Get or set the current gametype of the server                                       ┃
 ┃ hostname     Get or set the current hostname of the server                                       ┃
 ┃ map          Get the current map or change to a new one                                          ┃

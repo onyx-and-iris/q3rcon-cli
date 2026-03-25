@@ -4,7 +4,7 @@ from clypi import Command, Spinner, arg
 from clypi import parsers as cp
 from typing_extensions import override
 
-from . import console
+from . import config, console
 from .__about__ import __version__
 from .commands import (
     Fastrestart,
@@ -69,6 +69,23 @@ class Q3rconCli(Command):
     )
 
     @override
+    async def pre_run_hook(self):
+        if self.subcommand is not None and self.interactive:
+            console.err.print(
+                'Cannot use subcommands in interactive mode.',
+                style='yellow',
+            )
+            self.print_help()
+            raise SystemExit(1)
+
+        if self.subcommand:
+            (
+                self.subcommand.timeout,
+                self.subcommand.fragment_read_timeout,
+                self.subcommand.interpret,
+            ) = config.get(self.subcommand.prog().split()[0].lower())
+
+    @override
     async def run(self):
         if self.version:
             print(f'q3rcon-cli version: {clypi.style(__version__, fg="green")}')
@@ -76,8 +93,13 @@ class Q3rconCli(Command):
 
         if self.interactive:
             await self.run_interactive()
-        else:
+            return
+
+        if self.subcommand is None:
             await Status(self.host, self.port, self.password).run()
+            return
+
+        self.print_help()
 
     async def run_interactive(self):
         print(
@@ -85,23 +107,12 @@ class Q3rconCli(Command):
             clypi.style("'Q'", fg='yellow'),
             clypi.style('to quit.', fg='blue'),
         )
-
-        CMD_CONFIG = {
-            'status': (2, 1, False),
-            'fast_restart': (3, 1, True),
-            'map_restart': (3, 1, True),
-            'map': (3, 1, True),
-            'map_rotate': (3, 1, True),
-        }
-        DEFAULT_TIMEOUT = 2
-        DEFAULT_FRAGMENT_READ_TIMEOUT = 0.25
         while command := input(clypi.style('cmd: ', fg='green')):
             if command.lower() == 'q':
                 break
 
-            timeout, fragment_read_timeout, interpret = CMD_CONFIG.get(
-                command.split()[0].lower(),
-                (DEFAULT_TIMEOUT, DEFAULT_FRAGMENT_READ_TIMEOUT, False),
+            timeout, fragment_read_timeout, interpret = config.get(
+                command.split()[0].lower()
             )
 
             async with Spinner(f"Sending command: '{command}'", suffix='...'):

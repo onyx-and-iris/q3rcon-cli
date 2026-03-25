@@ -27,9 +27,16 @@ class Map(Command):
 
         async with Spinner('Changing map', suffix='...'):
             async with Client(
-                self.host, self.port, self.password, fragment_read_timeout=1
+                self.host,
+                self.port,
+                self.password,
+                timeout=self.timeout,
+                fragment_read_timeout=self.fragment_read_timeout,
             ) as client:
-                await client.send_command(f'map mp_{self.new_map.removeprefix("mp_")}')
+                await client.send_command(
+                    f'map mp_{self.new_map.removeprefix("mp_")}',
+                    interpret=self.interpret,
+                )
 
         console.out.print(
             f'Map changed to {self.new_map.removeprefix("mp_")}', style='green'
