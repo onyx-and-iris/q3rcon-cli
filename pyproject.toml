@@ -20,7 +20,7 @@ classifiers = [
   "Programming Language :: Python :: Implementation :: CPython",
   "Programming Language :: Python :: Implementation :: PyPy",
 ]
-dependencies = ["aio-q3-rcon>=1.0.1", "clypi>=1.8.2"]
+dependencies = ["aio-q3-rcon>=1.0.1", "clypi>=1.9.1"]
 
 [project.scripts]
 q3rcon-cli = "q3rcon_cli.cli:main"
@@ -34,7 +34,7 @@ Source = "https://github.com/onyx-and-iris/q3rcon-cli"
 path = "src/q3rcon_cli/__about__.py"
 
 [tool.hatch.envs.default]
-workspace.members = [{ path = "../aio-q3-rcon" }]
+workspace.members = [{ path = "../aio-q3-rcon" }] #, { path = "../clypi" }]
 
 [tool.hatch.envs.types]
 extra-dependencies = ["mypy>=1.0.0"]

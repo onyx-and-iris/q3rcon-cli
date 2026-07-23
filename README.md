@@ -80,7 +80,7 @@ Usage: q3rcon-cli [OPTIONS] COMMAND
 ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
 
 ┏━ Connection options ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-┃ -h, --host <HOST>          The host to connect to                                                ┃
+┃ -H, --host <HOST>          The host to connect to                                                ┃
 ┃ -p, --port <PORT>          The port to connect to                                                ┃
 ┃ -P, --password <PASSWORD>  The password for authentication                                       ┃
 ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛

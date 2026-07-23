@@ -13,7 +13,7 @@ class Q3rconCli(Command):
     subcommand: Subcommands | None = None
     host: str = arg(
         'localhost',
-        short='h',
+        short='H',
         help='The host to connect to',
         env='Q3RCON_CLI_HOST',
         group='Connection',
